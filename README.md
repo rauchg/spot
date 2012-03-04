@@ -42,7 +42,7 @@ search is constrained to that particular target.
 Run this command:
 
 ```
-curl https://raw.github.com/guille/spot/master/spot.sh -o ~/bin/spot
+curl https://raw.github.com/guille/spot/master/spot.sh -o ~/bin/spot && chmod +x ~/bin/spot
 ```
 
 If you don't have `~/bin`, replace it with another directory in your
