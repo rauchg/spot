@@ -87,11 +87,6 @@ if [ ! $sensitive ]; then
   grepopt="$grepopt --ignore-case"
 fi
 
-# add padding options
-if [ $padding ]; then
-  grepopt="$grepopt -A $padding -B $padding"
-fi
-
 # add line number options
 if [ $linenums ]; then
   grepopt="$grepopt -n"
