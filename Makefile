@@ -10,8 +10,10 @@ spot.1: spot.md
 
 install:
 	cp spot.sh $(PREFIX)/bin/spot
+	cp spot.1 $(PREFIX)/share/man/man1/spot.1
 
 uninstall:
 	rm -f $(PREFIX)/bin/spot
+	rm -f spot.1 $(PREFIX)/share/man/man1/spot.1
 
 .PHONY: docs install uninstall
