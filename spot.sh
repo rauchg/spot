@@ -99,13 +99,13 @@ fi
 
 # run search
 if [ $colors ]; then
-  find $dir -type f ! -path '*/.git*' ! -path '*/.svn' -print0 \
+  find "$dir" -type f ! -path '*/.git*' ! -path '*/.svn' -print0 \
     | GREP_COLOR="1;33;40" xargs -0 grep $grepopt "`echo $@`" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   $cyan\1$reset  \\
   \2 /"
 else
-  find $dir -type f ! -path '*/.git*' ! -path '*/.svn' -print0 \
+  find "$dir" -type f ! -path '*/.git*' ! -path '*/.svn' -print0 \
     | xargs -0 grep $grepopt "$@" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   \1  \\
