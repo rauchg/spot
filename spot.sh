@@ -38,7 +38,7 @@ EOF
 }
 
 # parse options
-while [[ "$1" =~ "-" ]]; do
+while [[ "$1" =~ ^- ]]; do
     case $1 in
         -s | --sensitive )
           sensitive=1
