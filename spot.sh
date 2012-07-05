@@ -54,32 +54,32 @@ update() {
 
 # parse options
 while [[ "$1" =~ ^- ]]; do
-    case $1 in
-        -V | --version )
-          echo $version
-          exit
-          ;;
-        -s | --sensitive )
-          sensitive=1
-          ;;
-        -i | --insensitive )
-          sensitive=
-          ;;
-        -C | --no-colors )
-          colors=
-          ;;
-        -L | --no-linenums )
-          linenums=
-          ;;
-        -U | --update )
-          update
-          ;;
-        -h | --help )
-          usage
-          exit
-          ;;
-    esac
-    shift
+  case $1 in
+    -V | --version )
+      echo $version
+      exit
+      ;;
+    -s | --sensitive )
+      sensitive=1
+      ;;
+    -i | --insensitive )
+      sensitive=
+      ;;
+    -C | --no-colors )
+      colors=
+      ;;
+    -L | --no-linenums )
+      linenums=
+      ;;
+    -U | --update )
+      update
+      ;;
+    -h | --help )
+      usage
+      exit
+      ;;
+  esac
+  shift
 done
 
 # check for directory as first parameter
