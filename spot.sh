@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+version="0.0.1"
+
 # search directory defaults to current
 dir=.
 
@@ -21,7 +23,7 @@ cyan=`echo -e '\033[96m'`
 reset=`echo -e '\033[39m'`
 
 # usage info
-function usage {
+usage() {
   cat <<EOF
 
   Usage: spot [options] [directory] [term ...]
@@ -32,14 +34,31 @@ function usage {
     -i, --insensitive       Force case insensitive search.
     -C, --no-colors         Force avoid colors.
     -L, --no-linenums       Hide line numbers.
+    -U, --update            Update spot(1)
+    -V, --version           Output version
     -h, --help              This message.
 
 EOF
 }
 
+# update spot(1) via git clone
+update() {
+  cd /tmp \
+    && echo "... updating" \
+    && git clone --depth 1 git://github.com/guille/spot.git \
+    && cd spot \
+    && make install \
+    && echo "... updated to $(spot --version)"
+  exit
+}
+
 # parse options
 while [[ "$1" =~ ^- ]]; do
     case $1 in
+        -V | --version )
+          echo $version
+          exit
+          ;;
         -s | --sensitive )
           sensitive=1
           ;;
@@ -51,6 +70,9 @@ while [[ "$1" =~ ^- ]]; do
           ;;
         -L | --no-linenums )
           linenums=
+          ;;
+        -U | --update )
+          update
           ;;
         -h | --help )
           usage
