@@ -33,6 +33,13 @@ search is constrained to that particular target.
 
 ![](http://f.cl.ly/items/2u3x3T3j0B0q3s0T310t/Image%202012.03.04%2012:40:08%20PM.png)
 
+#### Wildcard matching
+
+In `spot(1)` searches, the `.` character acts as the RegExp wildcard,
+making it very easy to perform searches that match anything, and to avoid
+escaping characters or including ones that are not necessary for your
+search.
+
 #### Options
 
 `spot -h` to see them.
