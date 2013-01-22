@@ -1,4 +1,3 @@
-
 ## spot(1)
 
 Tiny ack-style file search utility.
@@ -49,7 +48,7 @@ search.
 Run this command:
 
 ```
-curl https://raw.github.com/guille/spot/master/spot.sh -o ~/bin/spot && chmod +x ~/bin/spot
+curl -L https://raw.github.com/guille/spot/master/spot.sh -o ~/bin/spot && chmod +x ~/bin/spot
 ```
 
 If you don't have `~/bin`, replace it with another directory in your
