@@ -5,6 +5,9 @@ version="0.0.1"
 # search directory defaults to current
 dir=.
 
+# Exclude directories
+exclude="! -path '*/.git*' ! -path '*/.svn*'"
+
 # case sensitive search
 sensitive=
 
@@ -29,7 +32,7 @@ usage() {
   Usage: spot [options] [directory] [term ...]
 
   Options:
-
+    -e, --exclude [dir]     Exclude directory from search
     -s, --sensitive         Force case sensitive search.
     -i, --insensitive       Force case insensitive search.
     -C, --no-colors         Force avoid colors.
@@ -58,6 +61,10 @@ while [[ "$1" =~ ^- ]]; do
     -V | --version )
       echo $version
       exit
+      ;;
+    -e | --exclude )
+      shift; edir=$1;
+      exclude="$exclude ! -path '*/$edir*'"
       ;;
     -s | --sensitive )
       sensitive=1
@@ -121,13 +128,13 @@ fi
 
 # run search
 if [ $colors ]; then
-  find "$dir" -type f ! -path '*/.git*' ! -path '*/.svn*' -print0 \
+  eval "find "$dir" -type f $exclude -print0" \
     | GREP_COLOR="1;33;40" xargs -0 grep $grepopt "`echo $@`" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   $cyan\1$reset  \\
   \2 /"
 else
-  find "$dir" -type f ! -path '*/.git*' ! -path '*/.svn*' -print0 \
+  eval "find "$dir" -type f $exclude -print0" \
     | xargs -0 grep $grepopt "$@" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   \1  \\
