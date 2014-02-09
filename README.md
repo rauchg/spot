@@ -45,7 +45,13 @@ search.
 
 ### Installation
 
-Run this command:
+If you have NPM:
+
+```
+$ npm install -g spot
+```
+
+You're done! Otherwise, run this command:
 
 ```
 curl -L https://raw.github.com/guille/spot/master/spot.sh -o ~/bin/spot && chmod +x ~/bin/spot
