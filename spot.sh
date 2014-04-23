@@ -18,6 +18,9 @@ else
   colors=
 fi
 
+# show matches by default
+showmatches=1
+
 # line numbers shown by default
 linenums=1
 
@@ -36,6 +39,7 @@ usage() {
     -s, --sensitive         Force case sensitive search.
     -i, --insensitive       Force case insensitive search.
     -C, --no-colors         Force avoid colors.
+    -l, --filenames-only    Only list filenames with matches.
     -L, --no-linenums       Hide line numbers.
     -U, --update            Update spot(1)
     -V, --version           Output version
@@ -74,6 +78,9 @@ while [[ "$1" =~ ^- ]]; do
       ;;
     -C | --no-colors )
       colors=
+      ;;
+    -l | --filenames-only )
+      showmatches=
       ;;
     -L | --no-linenums )
       linenums=
@@ -114,6 +121,11 @@ grepopt="--binary-files=without-match --devices=skip"
 # add case insensitive search
 if [ ! $sensitive ]; then
   grepopt="$grepopt --ignore-case"
+fi
+
+# add filename only options
+if [ ! $showmatches ]; then
+  grepopt="$grepopt -l"
 fi
 
 # add line number options
