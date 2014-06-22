@@ -7,7 +7,7 @@ Tiny ack-style file search utility.
 * Short & written in Bash: you can edit it easily to suit your liking.
 * Fast. Just `find` + `grep`.
 * Searches most things by default instead of some known predefined extensions.
-* Ignores .git, .svn, devices and binary files.
+* Ignores .git, .hg, .svn, devices and binary files.
 
 ### Usage
 

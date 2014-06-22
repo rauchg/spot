@@ -6,7 +6,7 @@ version="0.0.1"
 dir=.
 
 # Exclude directories
-exclude="! -path '*/.git*' ! -path '*/.svn*'"
+exclude="! -path '*/.git*' ! -path '*/.hg*' ! -path '*/.svn*'"
 
 # case sensitive search
 sensitive=
