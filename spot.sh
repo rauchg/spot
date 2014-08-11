@@ -11,6 +11,9 @@ exclude="! -path '*/.git*' ! -path '*/.hg*' ! -path '*/.svn*'"
 # case sensitive search
 sensitive=
 
+# extension only search
+ext=
+
 # colors enabled by default in ttys
 if [ -t 1 ]; then
   colors=1
@@ -40,6 +43,7 @@ usage() {
     -U, --update            Update spot(1)
     -V, --version           Output version
     -h, --help              This message.
+    -x, --extension         Search within files that match the extension only.
 
 EOF
 }
@@ -65,6 +69,10 @@ while [[ "$1" =~ ^- ]]; do
     -e | --exclude )
       shift; edir=$1;
       exclude="$exclude ! -path '*/$edir*'"
+      ;;
+    -x | --extension )
+      shift; x=$1;
+      ext="-name '*.$x'"
       ;;
     -s | --sensitive )
       sensitive=1
@@ -128,13 +136,13 @@ fi
 
 # run search
 if [ $colors ]; then
-  eval "find "$dir" -type f $exclude -print0" \
+  eval "find "$dir" -type f $exclude $ext -print0" \
     | GREP_COLOR="1;33;40" xargs -0 grep $grepopt "`echo $@`" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   $cyan\1$reset  \\
   \2 /"
 else
-  eval "find "$dir" -type f $exclude -print0" \
+  eval "find "$dir" -type f $exclude $ext -print0" \
     | xargs -0 grep $grepopt "$@" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   \1  \\
