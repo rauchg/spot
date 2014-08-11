@@ -4,5 +4,6 @@
   "description": "file grep/search utility with good defaults",
   "bin": {
     "spot": "./spot.sh"
-  }
+  },
+  "install": "make install"
 }
