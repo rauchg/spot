@@ -18,6 +18,9 @@ else
   colors=
 fi
 
+# show matches by default
+showmatches=1
+
 # line numbers shown by default
 linenums=1
 
@@ -36,10 +39,12 @@ usage() {
     -s, --sensitive         Force case sensitive search.
     -i, --insensitive       Force case insensitive search.
     -C, --no-colors         Force avoid colors.
+    -l, --filenames-only    Only list filenames with matches.
     -L, --no-linenums       Hide line numbers.
     -U, --update            Update spot(1)
     -V, --version           Output version
     -h, --help              This message.
+    --                      End of options
 
 EOF
 }
@@ -56,7 +61,7 @@ update() {
 }
 
 # parse options
-while [[ "$1" =~ ^- ]]; do
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do
   case $1 in
     -V | --version )
       echo $version
@@ -75,6 +80,9 @@ while [[ "$1" =~ ^- ]]; do
     -C | --no-colors )
       colors=
       ;;
+    -l | --filenames-only )
+      showmatches=
+      ;;
     -L | --no-linenums )
       linenums=
       ;;
@@ -88,6 +96,7 @@ while [[ "$1" =~ ^- ]]; do
   esac
   shift
 done
+if [[ "$1" == "--" ]]; then shift; fi
 
 # check for directory as first parameter
 if [[ "$1" =~ / ]]; then
@@ -116,6 +125,11 @@ if [ ! $sensitive ]; then
   grepopt="$grepopt --ignore-case"
 fi
 
+# add filename only options
+if [ ! $showmatches ]; then
+  grepopt="$grepopt -l"
+fi
+
 # add line number options
 if [ $linenums ]; then
   grepopt="$grepopt -n"
@@ -129,13 +143,13 @@ fi
 # run search
 if [ $colors ]; then
   eval "find "$dir" -type f $exclude -print0" \
-    | GREP_COLOR="1;33;40" xargs -0 grep $grepopt "`echo $@`" \
+    | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   $cyan\1$reset  \\
   \2 /"
 else
   eval "find "$dir" -type f $exclude -print0" \
-    | xargs -0 grep $grepopt "$@" \
+    | xargs -0 grep $grepopt -e "$@" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   \1  \\
   \2 /"
