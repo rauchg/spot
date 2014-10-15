@@ -45,6 +45,12 @@ search.
 
 ### Installation
 
+If you have [bpkg](https://github.com/bpkg/bpkg):
+
+```
+$ bpkg install -g guille/spot
+```
+
 If you have NPM:
 
 ```
