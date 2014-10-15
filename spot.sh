@@ -146,13 +146,25 @@ if [ $colors ]; then
     | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   $cyan\1$reset  \\
-  \2 /"
+  \2 /" \
+    | awk '{
+    if (length($0) > 500)
+      print substr($0, 0, 500)"..."
+    else
+      print $0
+    }'
 else
   eval "find "$dir" -type f $exclude -print0" \
     | xargs -0 grep $grepopt -e "$@" \
     | sed "s/^\([^:]*:\)\(.*\)/  \\
   \1  \\
-  \2 /"
+  \2 /" \
+    | awk '{
+    if (length($0) > 500)
+      print substr($0, 0, 500)"..."
+    else
+      print $0
+    }'
 fi
 
 echo ""
