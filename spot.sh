@@ -137,9 +137,7 @@ if [ $linenums ]; then
 fi
 
 # add force colors
-if [ $colors ]; then
-  grepopt="$grepopt --color=always"
-fi
+grepopt="$grepopt --color=always"
 
 # run search
 eval "find "$dir" -type f $exclude -print0" \
@@ -147,16 +145,24 @@ eval "find "$dir" -type f $exclude -print0" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" \
-  | awk '{
+  | awk -v colors=$colors '{
   if (length($0) > 500) {
     i = index($0, "\033[1;33;40m")
 
     if (i > 3)
-      print "..."substr($0, i, 500)"..."
+      str = "..."substr($0, i, 500)"..."
     else
-      print substr($0, i, 500)"..."
+      str = substr($0, i, 500)"..."
   } else {
-    print $0
+    str = $0
+  }
+
+  if (colors != 1) {
+    gsub(/\033\[0m/, "", str)
+    gsub(/\033\[1;33;40m/, "", str)
+    print str
+  } else {
+    print str
   }
   }'
 
