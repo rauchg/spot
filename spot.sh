@@ -29,6 +29,9 @@ linenums=1
 cyan=`echo -e '\033[96m'`
 reset=`echo -e '\033[39m'`
 
+# max line length
+mline=500
+
 # usage info
 usage() {
   cat <<EOF
@@ -145,14 +148,14 @@ eval "find "$dir" -type f $exclude -print0" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" \
-  | awk -v colors=$colors '{
-  if (length($0) > 500) {
+  | awk -v colors=$colors -v mline=$mline '{
+  if (length($0) > mline) {
     i = index($0, "\033[1;33;40m")
 
     if (i > 3)
-      str = "..."substr($0, i, 500)"..."
+      str = "..."substr($0, i, mline)"..."
     else
-      str = substr($0, i, 500)"..."
+      str = substr($0, i, mline)"..."
   } else {
     str = $0
   }
