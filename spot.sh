@@ -150,26 +150,34 @@ $cyan\1$reset  \\
 \2 /" \
   | awk -v colors=$colors -v mline=$mline '{
   if (length($0) > mline) {
+    # Initialize pivot of window length
     pivot = mline / 2
+
+    # Get line number string
     i = index($0, ":")
     linenum = substr($0, 0, i)
 
+    # Loop through all individual matches
     i = index($0, "\033[1;33;40m")
     str = $0
     while(i > 0) {
+      # Build match string with `...` in front if not beginning of line and `...` in the tail
       if (i > 3)
         line = linenum"..."substr(str, i - pivot, pivot)"..."
       else
         line = linenum substr(str, i, pivot)"..."
 
+      # Strip colors if colors are disabled
       if (colors != 1) {
         gsub(/\033\[0m/, "", line)
         gsub(/\033\[1;33;40m/, "", line)
       }
 
+      # Move window by pivot length
       str = substr(str, i + pivot)
       i = index(str, "\033[1;33;40m")
 
+      # Show string
       print line
     }
 
