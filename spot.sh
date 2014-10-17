@@ -150,23 +150,32 @@ $cyan\1$reset  \\
 \2 /" \
   | awk -v colors=$colors -v mline=$mline '{
   if (length($0) > mline) {
+    pivot = mline / 2
     i = index($0, ":")
+    linenum = substr($0, 0, i)
+
     i = index($0, "\033[1;33;40m")
-
-    str = substr($0, 0, i)
-    if (i > 3)
-      str = str "..."substr($0, i, mline)"..."
-    else
-      str = str substr($0, i, mline)"..."
-  } else {
     str = $0
-  }
+    while(i > 0) {
+      if (i > 3)
+        line = linenum"..."substr(str, i - pivot, pivot)"..."
+      else
+        line = linenum substr(str, i, pivot)"..."
 
-  if (colors != 1) {
-    gsub(/\033\[0m/, "", str)
-    gsub(/\033\[1;33;40m/, "", str)
+      if (colors != 1) {
+        gsub(/\033\[0m/, "", line)
+        gsub(/\033\[1;33;40m/, "", line)
+      }
+
+      str = substr(str, i + pivot)
+      i = index(str, "\033[1;33;40m")
+
+      print line
+    }
+
+  } else {
+    print $0
   }
-  print str
   }'
 
 echo ""
