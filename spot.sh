@@ -160,10 +160,8 @@ $cyan\1$reset  \\
   if (colors != 1) {
     gsub(/\033\[0m/, "", str)
     gsub(/\033\[1;33;40m/, "", str)
-    print str
-  } else {
-    print str
   }
+  print str
   }'
 
 echo ""
