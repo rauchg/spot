@@ -150,12 +150,14 @@ $cyan\1$reset  \\
 \2 /" \
   | awk -v colors=$colors -v mline=$mline '{
   if (length($0) > mline) {
+    i = index($0, ":")
     i = index($0, "\033[1;33;40m")
 
+    str = substr($0, 0, i)
     if (i > 3)
-      str = "..."substr($0, i, mline)"..."
+      str = str "..."substr($0, i, mline)"..."
     else
-      str = substr($0, i, mline)"..."
+      str = str substr($0, i, mline)"..."
   } else {
     str = $0
   }
