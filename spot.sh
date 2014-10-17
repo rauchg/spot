@@ -17,6 +17,7 @@ if [ -t 1 ]; then
 else
   colors=
 fi
+colors=1
 
 # show matches by default
 showmatches=1
@@ -141,30 +142,22 @@ if [ $colors ]; then
 fi
 
 # run search
-if [ $colors ]; then
-  eval "find "$dir" -type f $exclude -print0" \
-    | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
-    | sed "s/^\([^:]*:\)\(.*\)/  \\
-  $cyan\1$reset  \\
-  \2 /" \
-    | awk '{
-    if (length($0) > 500)
-      print substr($0, 0, 500)"..."
+eval "find "$dir" -type f $exclude -print0" \
+  | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
+  | sed "s/^\([^:]*:\)\(.*\)/  \\
+$cyan\1$reset  \\
+\2 /" \
+  | awk '{
+  if (length($0) > 500) {
+    i = index($0, "\033[1;33;40m")
+
+    if (i > 3)
+      print "..."substr($0, i, 500)"..."
     else
-      print $0
-    }'
-else
-  eval "find "$dir" -type f $exclude -print0" \
-    | xargs -0 grep $grepopt -e "$@" \
-    | sed "s/^\([^:]*:\)\(.*\)/  \\
-  \1  \\
-  \2 /" \
-    | awk '{
-    if (length($0) > 500)
-      print substr($0, 0, 500)"..."
-    else
-      print $0
-    }'
-fi
+      print substr($0, i, 500)"..."
+  } else {
+    print $0
+  }
+  }'
 
 echo ""
