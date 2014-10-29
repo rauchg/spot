@@ -163,7 +163,7 @@ $cyan\1$reset  \\
     while(i > 0) {
       # Build match string with `...` in front if not beginning of line and `...` in the tail
       if (i > 3)
-        line = linenum"..."substr(str, i - pivot, pivot)"..."
+        line = linenum"..."substr(str, i - pivot, mline)"..."
       else
         line = linenum substr(str, i, pivot)"..."
 
