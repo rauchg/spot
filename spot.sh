@@ -17,7 +17,6 @@ if [ -t 1 ]; then
 else
   colors=
 fi
-colors=1
 
 # show matches by default
 showmatches=1
