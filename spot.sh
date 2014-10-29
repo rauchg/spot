@@ -158,10 +158,11 @@ $cyan\1$reset  \\
     str = $0
     while(i > 0) {
       # Build match string with `...` in front if not beginning of line and `...` in the tail
-      if (i > 3)
+      if (i > 3) {
         line = linenum"..."substr(str, i - (mline / 2), mline)"..."
-      else
+      } else {
         line = linenum substr(str, i, (mline / 2))"..."
+      }
 
       # Strip colors if colors are disabled
       if (colors != 1) {
