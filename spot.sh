@@ -28,6 +28,9 @@ linenums=1
 cyan=`echo -e '\033[96m'`
 reset=`echo -e '\033[39m'`
 
+# max line length
+mline=500
+
 # usage info
 usage() {
   cat <<EOF
@@ -136,23 +139,62 @@ if [ $linenums ]; then
 fi
 
 # add force colors
-if [ $colors ]; then
-  grepopt="$grepopt --color=always"
-fi
+grepopt="$grepopt --color=always"
 
 # run search
-if [ $colors ]; then
-  eval "find "$dir" -type f $exclude -print0" \
-    | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
-    | sed "s/^\([^:]*:\)\(.*\)/  \\
-  $cyan\1$reset  \\
-  \2 /"
-else
-  eval "find "$dir" -type f $exclude -print0" \
-    | xargs -0 grep $grepopt -e "$@" \
-    | sed "s/^\([^:]*:\)\(.*\)/  \\
-  \1  \\
-  \2 /"
-fi
+eval "find "$dir" -type f $exclude -print0" \
+  | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
+  | sed "s/^\([^:]*:\)\(.*\)/  \\
+$cyan\1$reset  \\
+\2 /" \
+  | awk -v linenums=$linenums -v reset=`tput sgr0` -v colors=$colors -v mline=$mline '{
+  if (length($0) > mline) {
+    # Get line number string
+    i = index($0, ":")
+    linenum = substr($0, 1, i)
+
+    # Loop through all individual matches
+    i = index($0, "\033[1;33;40m")
+    str = $0
+    while(i > 0) {
+      # Clean coloring
+      line = reset
+
+      if (linenums) {
+        line = line linenum reset
+      }
+
+      # Build match string with `...` in front if not beginning of line and `...` in the tail
+      if (i > 3) {
+        line = line "..."substr(str, i - (mline / 2), mline)"..."
+      } else {
+        line = line substr(str, i, (mline / 2))"..."
+      }
+
+      # Strip colors if colors are disabled
+      if (colors != 1) {
+        gsub(/\033\[0m/, "", line)
+        gsub(/\033\[1;33;40m/, "", line)
+      }
+
+      # Move window
+      str = substr(str, i + (mline / 2))
+      i = index(str, "\033[1;33;40m")
+
+      # Show string
+      print line
+    }
+
+  } else {
+    # Strip colors if colors are disabled
+    if (colors != 1) {
+      gsub(/\033\[0m/, "", $0)
+      gsub(/\033\[1;33;40m/, "", $0)
+    }
+
+    print $0
+  }
+  }'
 
 echo ""
+tput sgr0 # Clean leftover colors
