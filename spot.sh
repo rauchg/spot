@@ -147,7 +147,7 @@ eval "find "$dir" -type f $exclude -print0" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" \
-  | awk -v colors=$colors -v mline=$mline '{
+  | awk -v reset=`tput sgr0` -v colors=$colors -v mline=$mline '{
   if (length($0) > mline) {
     # Get line number string
     i = index($0, ":")
@@ -159,9 +159,9 @@ $cyan\1$reset  \\
     while(i > 0) {
       # Build match string with `...` in front if not beginning of line and `...` in the tail
       if (i > 3) {
-        line = linenum"..."substr(str, i - (mline / 2), mline)"..."
+        line = reset linenum"..."substr(str, i - (mline / 2), mline)"..."
       } else {
-        line = linenum substr(str, i, (mline / 2))"..."
+        line = reset linenum substr(str, i, (mline / 2))"..."
       }
 
       # Strip colors if colors are disabled
@@ -184,3 +184,4 @@ $cyan\1$reset  \\
   }'
 
 echo ""
+tput sgr0
