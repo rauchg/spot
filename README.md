@@ -5,7 +5,7 @@ Tiny ack-style file search utility.
 ### Features
 
 * Short & written in Bash: you can edit it easily to suit your liking.
-* Fast. Just `find` + `grep`.
+* Fast. Just `find` + `grep` + `awk`.
 * Searches most things by default instead of some known predefined extensions.
 * Ignores .git, .hg, .svn, devices and binary files.
 
@@ -16,21 +16,21 @@ Tiny ack-style file search utility.
 All arguments constitute the search text. No need to wrap most searches
 in double quotes.
 
-![](http://f.cl.ly/items/1Z063i0o3O2m0y2n0Q0d/Image%202012.03.04%2012:26:39%20PM.png)
+![](https://cldup.com/TiVORMfp77-1200x1200.png)
 
 #### Smart case
 
 `spot` is case-insensitive by default. However, if your search term
 contains an uppercase letter, it becomes sensitive!
 
-![](http://f.cl.ly/items/2N332F0V302x1X47042c/Image%202012.03.04%2012:35:22%20PM.png)
+![](https://cldup.com/EnapzH91cM-1200x1200.png)
 
 #### Smart targets
 
 If the first argument contains a slash _and_ is a valid directory, the
 search is constrained to that particular target.
 
-![](http://f.cl.ly/items/2u3x3T3j0B0q3s0T310t/Image%202012.03.04%2012:40:08%20PM.png)
+![](https://cldup.com/AQN2uflm8k-3000x3000.png)
 
 #### Wildcard matching
 
@@ -38,6 +38,15 @@ In `spot(1)` searches, the `.` character acts as the RegExp wildcard,
 making it very easy to perform searches that match anything, and to avoid
 escaping characters or including ones that are not necessary for your
 search.
+
+![](https://cldup.com/YV-Q1_-0Lo-3000x3000.png)
+
+#### Line abbrevation
+
+If the line where matches are found is too long (such as minified source files),
+`spot(1)` will only display the surrounding characters.
+
+![](https://cldup.com/aeEUHlTJin-3000x3000.png)
 
 #### Options
 
