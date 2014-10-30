@@ -157,6 +157,7 @@ $cyan\1$reset  \\
     i = index($0, "\033[1;33;40m")
     str = $0
     while(i > 0) {
+      # Clean coloring
       line = reset
 
       if (linenums) {
@@ -196,4 +197,4 @@ $cyan\1$reset  \\
   }'
 
 echo ""
-tput sgr0
+tput sgr0 # Clean leftover colors
