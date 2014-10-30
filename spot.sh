@@ -185,6 +185,12 @@ $cyan\1$reset  \\
     }
 
   } else {
+    # Strip colors if colors are disabled
+    if (colors != 1) {
+      gsub(/\033\[0m/, "", $0)
+      gsub(/\033\[1;33;40m/, "", $0)
+    }
+
     print $0
   }
   }'
