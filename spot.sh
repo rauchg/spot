@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.1"
+version="0.2.0"
 
 # search directory defaults to current
 dir=.

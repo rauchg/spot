@@ -1,4 +1,13 @@
 
+0.2.0 / 2014-10-30
+==================
+
+ * Update README.md with new beautiful screenshots
+ * Use awk to only print the first 500 characters. [rase-]
+ * Add -- for end of options [kbzod]
+ * Add -l for displaying filenames only [kbzod]
+ * Added to `bpkg` [jwerle]
+
 0.1.1 / 2014-06-22
 ==================
 
