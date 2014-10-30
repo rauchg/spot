@@ -151,7 +151,7 @@ $cyan\1$reset  \\
   if (length($0) > mline) {
     # Get line number string
     i = index($0, ":")
-    linenum = substr($0, 0, i)
+    linenum = substr($0, 1, i)
 
     # Loop through all individual matches
     i = index($0, "\033[1;33;40m")
