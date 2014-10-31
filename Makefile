@@ -1,5 +1,5 @@
 
-PREFIX = /usr/local
+PREFIX ?= /usr/local
 MANTASTIC = http://mantastic.herokuapp.com
 
 docs: spot.1
