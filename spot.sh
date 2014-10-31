@@ -21,6 +21,9 @@ fi
 # show matches by default
 showmatches=1
 
+# file name pattern
+filename=
+
 # line numbers shown by default
 linenums=1
 
@@ -41,6 +44,7 @@ usage() {
     -e, --exclude [dir]     Exclude directory from search
     -s, --sensitive         Force case sensitive search.
     -i, --insensitive       Force case insensitive search.
+    -f, --file              Only search file names matching the provided pattern
     -C, --no-colors         Force avoid colors.
     -l, --filenames-only    Only list filenames with matches.
     -L, --no-linenums       Hide line numbers.
@@ -79,6 +83,10 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do
       ;;
     -i | --insensitive )
       sensitive=
+      ;;
+    -f | --file )
+      shift; ffile=$1;
+      filename=$ffile
       ;;
     -C | --no-colors )
       colors=
@@ -141,8 +149,15 @@ fi
 # add force colors
 grepopt="$grepopt --color=always"
 
+# find default params
+findopt=
+
+if [ $filename ]; then
+  findopt="$findopt -name $filename"
+fi
+
 # run search
-eval "find "$dir" -type f $exclude -print0" \
+eval "find "$dir" $findopt -type f $exclude -print0" \
   | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
