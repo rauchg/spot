@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.2.0"
+version="0.2.1"
 
 # search directory defaults to current
 dir=.
@@ -28,8 +28,8 @@ filename=
 linenums=1
 
 # ansi colors
-cyan=`echo -e '\033[96m'`
-reset=`echo -e '\033[39m'`
+cyan=$(echo -e '\033[96m')
+reset=$(echo -e '\033[39m')
 
 # max line length
 mline=500
@@ -112,13 +112,13 @@ if [[ "$1" == "--" ]]; then shift; fi
 # check for directory as first parameter
 if [[ "$1" =~ / ]]; then
   if [ -d "$1" ]; then
-    dir=`echo $1 | sed "s/\/$//"`
+    dir=${1/%\//}
     shift
   fi
 fi
 
 # check for empty search
-if [[ "" = "$@" ]]; then
+if [ -z "$@" ]; then
   echo "(no search term. \`spot -h\` for usage)"
   exit 1
 fi
@@ -129,40 +129,42 @@ if [[ "$@" =~ [A-Z] ]]; then
 fi
 
 # grep default params
-grepopt="--binary-files=without-match --devices=skip"
+grepopt=( --binary-files=without-match --devices=skip )
 
 # add case insensitive search
 if [ ! $sensitive ]; then
-  grepopt="$grepopt --ignore-case"
+  grepopt[${#grepopt[*]}]="--ignore-case"
 fi
 
 # add filename only options
 if [ ! $showmatches ]; then
-  grepopt="$grepopt -l"
+  grepopt[${#grepopt[*]}]="-l"
 fi
 
 # add line number options
 if [ $linenums ]; then
-  grepopt="$grepopt -n"
+  grepopt[${#grepopt[*]}]="-n"
 fi
 
 # add force colors
-grepopt="$grepopt --color=always"
+if [ $colors ]; then
+  grepopt[${#grepopt[*]}]="--color=always"
+fi
 
 # find default params
 findopt=
 
-if [ $filename ]; then
+if [ "$filename" ]; then
   findopt="$findopt -name $filename"
 fi
 
 # run search
-eval "find "$dir" $findopt -type f $exclude -print0" \
-  | GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "`echo $@`" \
+eval "find $dir $findopt -type f $exclude -print0" \
+  | GREP_COLOR="1;33;40" xargs -0 grep "${grepopt[@]}" -e "$@" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" \
-  | awk -v linenums=$linenums -v reset=`tput sgr0` -v colors=$colors -v mline=$mline '{
+  | awk -v linenums=$linenums -v reset="$(tput sgr0)" -v colors=$colors -v mline=$mline '{
   if (length($0) > mline) {
     # Get line number string
     i = index($0, ":")
