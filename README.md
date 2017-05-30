@@ -54,6 +54,12 @@ If the line where matches are found is too long (such as minified source files),
 
 ### Installation
 
+If you have [bpkg](https://github.com/bpkg/bpkg):
+
+```
+$ bpkg install -g guille/spot
+```
+
 If you have NPM:
 
 ```
