@@ -110,7 +110,7 @@ done
 if [[ "$1" == "--" ]]; then shift; fi
 
 # check for directory as first parameter
-if [[ "$1" =~ / ]]; then
+if [[ "$1" =~ / ]] && [[ "$1" =~ [^\/] ]]; then
   if [ -d "$1" ]; then
     dir=${1/%\//}
     shift
