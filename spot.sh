@@ -110,7 +110,7 @@ done
 if [[ "$1" == "--" ]]; then shift; fi
 
 # check for directory as first parameter
-if [[ "$1" =~ / ]]; then
+if [[ "$1" =~ / ]] && [[ "$1" =~ [^\/] ]]; then
   if [ -d "$1" ]; then
     dir=${1/%\//}
     shift
@@ -118,7 +118,7 @@ if [[ "$1" =~ / ]]; then
 fi
 
 # check for empty search
-if [ -z "$@" ]; then
+if [[ -z "$@" ]]; then
   echo "(no search term. \`spot -h\` for usage)"
   exit 1
 fi
@@ -160,7 +160,7 @@ fi
 
 # run search
 eval "find $dir $findopt -type f $exclude -print0" \
-  | GREP_COLOR="1;33;40" xargs -0 grep "${grepopt[@]}" -e "$@" \
+  | GREP_COLOR="1;33;40" xargs -0 grep "${grepopt[@]}" -e "`echo \"$@\"`" \
   | sed "s/^\([^:]*:\)\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" \
