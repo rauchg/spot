@@ -41,7 +41,7 @@ search.
 
 ![](https://cldup.com/YV-Q1_-0Lo-3000x3000.png)
 
-#### Line abbrevation
+#### Line abbreviation
 
 If the line where matches are found is too long (such as minified source files),
 `spot(1)` will only display the surrounding characters.
