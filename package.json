@@ -1,6 +1,6 @@
 {
   "name": "spot",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "file grep/search utility with good defaults",
   "bin": {
     "spot": "./spot.sh"
