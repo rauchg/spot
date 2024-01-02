@@ -144,7 +144,7 @@ grepopt="$grepopt --color=always"
 
 # run search
 eval "find "$dir" -type f $exclude -print0" |
-	GREP_COLOR="1;33;40" xargs -0 grep $grepopt -e "$(echo $@)" |
+	GREP_COLORS="1;33;40" xargs -0 grep $grepopt -e "$(echo $@)" |
 	sed "s/^\([^:]*\):\(.*\)/  \\
 $cyan\1$reset  \\
 \2 /" |
