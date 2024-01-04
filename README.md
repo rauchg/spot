@@ -63,7 +63,7 @@ $ npm install -g spot
 Or if you have [bpkg](https://github.com/bpkg/bpkg)
 
 ```
-$ bpkg install -g spot
+$ bpkg install -g rauchg/spot
 ```
 
 You're done! Otherwise, run this command:
